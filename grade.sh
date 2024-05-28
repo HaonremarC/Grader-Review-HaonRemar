@@ -1,4 +1,5 @@
 CPATH='.:lib/hamcrest-core-1.3.jar:lib/junit-4.13.2.jar'
+#!/bin/bash
 
 # Clean up any previous submissions and grading areas
 rm -rf student-submission
@@ -24,8 +25,16 @@ cp TestListExamples.java grading-area/
 # Navigate to the grading area
 cd grading-area
 
+# Set the CLASSPATH environment variable to include JUnit JAR files
+export CLASSPATH=".:../lib/hamcrest-core-1.3.jar:../lib/junit-4.13.2.jar"
+
+# Print the current directory and its contents for debugging
+echo "Current directory: $(pwd)"
+echo "Contents of grading-area:"
+ls -l
+
 # Compile the code
-javac -cp $CPATH ListExamples.java TestListExamples.java 2> compile_errors.txt
+javac ListExamples.java TestListExamples.java 2> compile_errors.txt
 if [[ $? -ne 0 ]]; then
   echo "Compilation failed. See compile_errors.txt for details."
   cat compile_errors.txt
@@ -33,7 +42,7 @@ if [[ $? -ne 0 ]]; then
 fi
 
 # Run the tests
-java -cp $CPATH org.junit.runner.JUnitCore TestListExamples > test_output.txt
+java org.junit.runner.JUnitCore TestListExamples > test_output.txt
 
 # Check the results
 TEST_OUTPUT=$(cat test_output.txt)
@@ -45,8 +54,3 @@ else
   echo "$TEST_OUTPUT"
 fi
 
-# Draw a picture/take notes on the directory structure that's set up after
-# getting to this point
-
-# Then, add here code to compile and run, and do any post-processing of the
-# tests
